@@ -26,9 +26,9 @@ const logout = async (ctx) => {
 };
 
 const signUp = async (ctx) => {
-    const { request: { body: { email, password } } } = ctx;
-
     try {
+      const { request: { body: { email, password, name, surname } } } = ctx;
+
       const salt = bcrypt.genSaltSync();
       const hash = bcrypt.hashSync(password, salt);
     
@@ -36,6 +36,8 @@ const signUp = async (ctx) => {
         data: {
           email,
           password: hash,
+          name,
+          surname,
           favorites: [],
         },
       });
@@ -43,7 +45,10 @@ const signUp = async (ctx) => {
       ctx.status = 200;
       ctx.body = { success: true };
     } catch (err) {
-      ctx.body = err;
+      ctx.status = 400;
+      ctx.body = {
+        error: 'Registration has not succeed, check the correction of all passed data'
+      };
     }
 };
 

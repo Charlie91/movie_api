@@ -98,8 +98,10 @@ model Movie {
 }
 
 model User {
-  password  String? @db.VarChar
-  id        Int     @id @default(autoincrement())
-  email     String? @unique @db.VarChar(30)
+  password  String   @db.VarChar
+  id        Int      @id @default(autoincrement())
+  email     String   @unique @db.VarChar(30)
   favorites String[] @default([])
+  name      String?  @db.VarChar(50)
+  surname   String?  @db.VarChar(50)
 }

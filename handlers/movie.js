@@ -1,6 +1,8 @@
+const mapMovieModel = require('../libs/mapMovieModel');
 const prisma = require('../prisma');
 
 const getRandomMovie = async (ctx) => {
+  try {
     const count = await prisma.movie.count();
     const skip = Math.floor(Math.random() * count);
     const movie = await prisma.movie.findMany({
@@ -8,16 +10,24 @@ const getRandomMovie = async (ctx) => {
         skip: skip,
     });
 
-    ctx.body = movie[0];
+    ctx.body = movie.map(mapMovieModel)[0];
+  } catch(e) {
+    ctx.body = e;
+  }
 };
 
 const getGenres = async (ctx) => {
+  try {
     const result = await prisma.$queryRaw`SELECT distinct unnest(genres) FROM "Movie"`
   
     ctx.body = result.map(elem => elem.unnest);
+  } catch(e) {
+    ctx.body = e;
+  }
 };
 
 const getTop10Movies = async (ctx) => {
+  try {
     const result = await prisma.movie.findMany({
       take: 10,
       where: {
@@ -28,20 +38,28 @@ const getTop10Movies = async (ctx) => {
       },
     });
   
-    ctx.body = result;
+    ctx.body = result.map(mapMovieModel);
+  } catch(e) {
+    ctx.body = e;
+  }
 };
 
 const getMovieDetails = async (ctx) => {
+  try {
     const movie = await prisma.movie.findUnique({
       where: {
         tmdbId: Number(ctx.params.id),
       },
     })
   
-    ctx.body = movie;
+    ctx.body = [movie].map(mapMovieModel)[0];
+  } catch(e) {
+    ctx.body = e;
+  }
 };
 
 const getMoviesList = async (ctx) => {
+  try {
     const { request: { query } } = ctx;
   
     const take = query.count <= 50 ? +query.count : 50
@@ -69,7 +87,10 @@ const getMoviesList = async (ctx) => {
       ...queryArgs,
     });
   
-    ctx.body = movies;
+    ctx.body = movies.map(mapMovieModel);
+  } catch (e) {
+    ctx.body = e;
+  }
 };
 
 module.exports = {

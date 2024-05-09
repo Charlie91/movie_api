@@ -32,7 +32,6 @@ passport.use(
       if (bcrypt.compareSync(password, user.password)) {
         return done(null, user);
       } else {
-        debugger;
         return done(null, false);
       }
     } catch (err) {
