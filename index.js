@@ -1,6 +1,7 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const { bodyParser } = require("@koa/bodyparser");
+const cors = require('@koa/cors');
 const session = require('koa-session');
 const passport = require('koa-passport');
 const mustBeAuthenticated = require('./libs/mustBeAuthenticated');
@@ -13,6 +14,7 @@ const router = new Router();
 
 app.keys = ['super-secret-key'];
 app.use(session(app));
+app.use(cors());
 
 app.use(bodyParser());
 
