@@ -48,7 +48,9 @@ const setFavorites = async (ctx) => {
           },
         },  
       })
-      ctx.body = result;  
+      ctx.body = {
+        result: true,
+      };
     } catch (e) {
       ctx.status = 400;
       ctx.body = 'Bad request';
@@ -68,7 +70,9 @@ const deleteFavorites = async ctx => {
         },  
       });
 
-      ctx.body = result;
+      ctx.body = {
+        result: true,
+      };
     } catch (e) {
       ctx.body = e;
     }
