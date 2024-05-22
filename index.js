@@ -13,8 +13,8 @@ const app = new Koa();
 const router = new Router();
 
 app.keys = ['super-secret-key'];
-app.use(session(app));
-app.use(cors());
+app.use(session({secure: true, sameSite: "none"}, app));
+app.use(cors({ credentials: true }));
 
 app.use(bodyParser());
 
