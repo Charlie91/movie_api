@@ -9,7 +9,7 @@ const authHandlers = require('./handlers/auth');
 const movieHandlers = require('./handlers/movie');
 const userHandlers = require('./handlers/user');
 
-const app = new Koa();
+const app = new Koa({ proxy: true });
 const router = new Router();
 
 app.keys = ['super-secret-key'];
