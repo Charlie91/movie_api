@@ -45,10 +45,17 @@ const signUp = async (ctx) => {
       ctx.status = 200;
       ctx.body = { success: true };
     } catch (err) {
-      ctx.status = 400;
-      ctx.body = {
-        error: 'Registration has not succeed, check the correction of all passed data'
-      };
+      if (err.code === 'P2002') {
+        ctx.status = 409;
+        ctx.body = {
+          error: 'User already exists'
+        };  
+      } else {
+        ctx.status = 400;
+        ctx.body = {
+          error: 'Registration has not succeed, check the correction of all passed data'
+        };  
+      }
     }
 };
 
